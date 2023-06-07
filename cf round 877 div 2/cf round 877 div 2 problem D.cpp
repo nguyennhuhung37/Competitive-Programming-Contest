@@ -14,31 +14,29 @@ int main(){
         for(int i = 1; i <= q; i++) cout << "NO" << endl;
         return 0;
     }
-    int first_0 = n, first_1 = n, last_0 = n, last_1 = n;
-    for(int i = 0; i < n; i++){
-        if(first_0 != n && first_1 != n){
-            break;
-        }
+    int first_0 = n+1, first_1 = n+2, last_0 = -3, last_1 = -2;
+    for(int i = 1; i < n; i += 2){
         if(s[i] == '('){
-            if(i > 0 && s[i] == s[i-1]){
-                first_0 = i;
-            }
-        }
-        else{
-            if(i > 0 && s[i] == s[i-1]){
-                first_1 = i;
-            }
+            first_0 = i;
+            break;
         }
     }
-    for(int i = n - 1; i > 0; i--){
-        if(last_0 != n && last_1 != n){
+    for(int i = n-1; i >= 1; i -= 2){
+        if(s[i] == '('){
+            last_0 = i;
             break;
         }
-        if(s[i] == '(' && s[i-1] == '(' && last_0 == n){
-            last_0 = i;
+    }
+    for(int i = 0; i < n; i += 2){
+        if(s[i] == ')'){
+            first_1 = i;
+            break;
         }
-        if(s[i] == ')' && s[i-1] == ')'&& last_1 == n){
+    }
+    for(int i = n-2; i >= 0; i -= 2){
+        if(s[i] == '('){
             last_1 = i;
+            break;
         }
     }
     while(q--){
@@ -46,98 +44,59 @@ int main(){
         id--;
         if(s[id] == '('){
             s[id] = ')';
-            if(s[id] == s[id-1]){
-                if(first_1 == n){
-                    first_1 = id;
-                    last_1 = id;
-                }
-                else{
-                    first_1 = min(first_1, id);
-                    last_1 = max(last_1, id);
-                }
-            }
-            if(s[id] == s[id+1]){
-                if(first_1 == n){
-                    first_1 = id+1;
-                    last_1 = id+1;
-                }
-                else{
-                    first_1 = min(first_1, id+1);
-                    last_1 = max(last_1, id+1);
-                }
-            }
-            if(id == first_0 || id == first_0 - 1){
-                first_0 = n;
-                for(int i = id + 2; i < n; i++){
-                    if(s[i] == '(' && s[i-1] == '('){
-                         first_0 = i;
-                         break;
-                    }
-                }
-            }
-            if(first_0 == n) last_0 = n;
-            else{
-                if(id == last_0 || id == last_0 - 1){
-                    for(int i = id - 1; i > 0; i--){
-                        if(s[i] == '(' && s[i-1] == '('){
-                             last_0 = i;
-                             break;
+            if(id % 2 == 1){
+                if(id == first_0){
+                    first_0 = n+1;
+                    for(int i = id + 2; i < n; i += 2){
+                        if(s[i] == '('){
+                            first_0 = i;
+                            break;
                         }
                     }
                 }
+                if(id == last_0){
+                    last_0 = -3;
+                    for(int i = id - 2; i >= 1; i -= 2){
+                        if(s[i] == '('){
+                            last_0 = i;
+                            break;
+                        }
+                    }
+                }
+            }
+            else{
+                first_1 = min(id, first_1);
+                last_1 = max(id, last_1);
             }
         }
         else{
             s[id] = '(';
-            if(s[id] == s[id-1]){
-                if(first_0 == n){
-                    first_0 = id;
-                    last_0 = id;
-                }
-                else{
-                    first_0 = min(first_0, id);
-                    last_0 = max(last_0, id);
-                }
-            }
-            if(s[id] == s[id+1]){
-                if(first_0 == n){
-                    first_0 = id+1;
-                    last_0 = id+1;
-                }
-                else{
-                    first_0 = min(first_0, id+1);
-                    last_0 = max(last_0, id+1);
-                }
-            }
-            if(id == first_1 || id == first_1 - 1){
-                first_1 = n;
-                for(int i = id + 2; i < n; i++){
-                    if(s[i] == ')' && s[i-1] == ')'){
-                         first_1 = i;
-                         break;
+            if(id % 2 == 0){
+                if(id == first_1){
+                    first_1 = n+2;
+                    for(int i = id + 2; i < n; i += 2){
+                        if(s[i] == ')'){
+                            first_1 = i;
+                            break;
+                        }
                     }
                 }
-            }
-            if(first_1 == n) last_1 = n;
-            else{
-                if(id == last_1 || id == last_1 - 1){
-                    for(int i = id - 1; i > 0; i--){
-                        if(s[i] == ')' && s[i-1] == ')'){
-                             last_1 = i;
-                             break;
+                if(id == last_1){
+                    last_1 = -2;
+                    for(int i = id - 2; i >= 0; i -= 2){
+                        if(s[i] == ')'){
+                            last_1 = i;
+                            break;
                         }
                     }
                 }
             }
+            else{
+                first_0 = min(id, first_0);
+                last_0 = max(id, last_0);
+            }
         }
-        if(s[0] == ')'){
-            cout << "NO" << endl;
-            continue;
-        }
-        if(first_0 == n && first_1 == n){
-            cout << "YES" << endl;
-        }
-        else if(first_0 != n && first_1 != n && first_0 < first_1 && last_0 < last_1){
+        if(first_0 < first_1 && last_0 < last_1){
             cout << "YES" << endl;
         }
         else cout << "NO" << endl;
