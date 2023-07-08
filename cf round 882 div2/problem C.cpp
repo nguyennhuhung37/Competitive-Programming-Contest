@@ -12,21 +12,20 @@ int main(){
     cin >> t;
     while(t--)
     {
-        memset(vis, false, sizeof(vis));
+        for(int i = 0; i < 256; i++) vis[i] = false;
         vis[0] = true;
         cin >> n;
         for(int i = 1 ; i <= n; i++) cin >> a[i];
         int ans = 0;
+        int cur_xor = 0;
         for(int i = 1; i <= n; i++){
+            cur_xor ^= a[i];
             for(int j = 0; j < 256; j++){
                 if(vis[j]){
-                    vis[j^a[i]] = true;
-                    if(ans < j^a[i]){
-                        ans = j^a[i];
-                        cout << "j: " << j << " i:" << i << endl;
-                    }
+                    ans = max(ans, j ^ cur_xor);
                 }
             }
+            vis[cur_xor] = true;
         }
         cout << ans << endl;
     }

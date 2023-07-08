@@ -1,13 +1,13 @@
 #include<bits/stdc++.h>
 using namespace std;
-using ll = long long;
+#define int long long
 #define MAX 200005
 #define ii pair<int, int>
 #define iii pair<ii, int>
 
 int t, n, m, h;
 
-int main(){
+signed main(){
     cin >> t;
     while(t--)
     {
@@ -20,7 +20,7 @@ int main(){
                 int x; cin >> x;
                 pq.push(x);
             }
-            int ex = 0, pel = 0, time = 0;
+            int ex = 0, time = 0, pel = 0;
             while(!pq.empty()){
                 int top = pq.top();
                 pq.pop();
