@@ -13,7 +13,7 @@ int main(){
     while(tc--)
     {
         cin >> n;
-        unordered_map<ll, ll> cnt;
+        map<ll, ll> cnt;
         for(int i = 1; i <= n; i++){
             ll x; cin >> x;
             cnt[x]++;
